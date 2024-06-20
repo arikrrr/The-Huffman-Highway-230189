@@ -1,0 +1,2 @@
+The code will not show any error because the expression i[arr] is equivalent to arr[i] in C++. arr[i] is equal to i[arr] is equal to *(arr+i) in c++.
+Output: 2 8 18 34 5 

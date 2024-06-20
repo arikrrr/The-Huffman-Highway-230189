@@ -1,0 +1,5 @@
+The first line will be the momory address of first element of arr.
+The second line will be "abcde" (without double quotes)
+Reason:
+       1. When we print an array name (arr) using cout, it prints the memory of the first element of the array. The name arr is actually the pointer to the first element of the array.
+       2. When we print a character array using cout, it is treated as a C-style string. Thus it will print the text upto null character. So the output will be "abcde".
