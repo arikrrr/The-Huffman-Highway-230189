@@ -73,5 +73,6 @@ vvi TreePathQueries(vector<pair<int,int> > p, TreeNode* root){
     return answer;
 }
 int main(){
+    // use the function TreePathQueries
     return 0;
 }
