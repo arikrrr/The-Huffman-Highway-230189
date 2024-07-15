@@ -1,50 +1,39 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-void findAllPathsV(map<int, vector<int>>& graph, int start, int end, vector<int>& path, vector<vector<int>>& allPaths) {
-    path.push_back(start);
-    
-    if (start == end) {
-        allPaths.push_back(path);
-    } else {
-        for (int temp : graph[start]) {
-            if (find(path.begin(), path.end(), temp) == path.end()) {
-                findAllPathsV(graph, temp, end, path, allPaths);
+int maxProjectValue(int N, vector<int>& values, vector<vector<string>>& required_languages, set<string>& known_languages) {
+    vector<int> dp(1 << N, 0);
+    for (int mask = 1; mask < (1 << N); mask++) {
+        for (int i = 0; i < N; i++) {
+            if (mask & (1 << i)) {  
+                bool can_do_project = true;
+                for (const string& lang : required_languages[i]) {
+                    if (known_languages.find(lang) == known_languages.end()) {
+                        can_do_project = false;
+                        break;
+                    }
+                }
+                if (can_do_project) {
+                    int prev_mask = mask ^ (1 << i); 
+                    dp[mask] = max(dp[mask], dp[prev_mask] + values[i]);
+                }
             }
         }
     }
-    path.pop_back();
+    return dp[(1 << N) - 1];
 }
 
 int main() {
-    map<int, vector<int>> graph;
-    graph[0] = {1, 2, 4};
-    graph[1] = {3};
-    graph[2] = {3, 4, 6};
-    graph[3] = {6};
-    graph[4] = {2, 5};
-    graph[5] = {2};
-    graph[6] = {2, 7, 9};
-    graph[7] = {9};
-    graph[8] = {7};
-    graph[9] = {8, 10};
-    graph[10] = {9};
-
-    int startNode = 0;
-    int endNode = 0;
-
-    vector<int> path;
-    vector<vector<int>> allPaths;
-    findAllPathsV(graph, startNode, endNode, path, allPaths);
+    int N = 10;
+    vector<int> values = {50, 30, 70, 20, 90, 10, 60, 40, 80, 100};
+    vector<vector<string>> required_languages = {
+        {"Python", "C++"}, {"Java", "Python"}, {"C++", "Java", "Python"},
+        {"Python"}, {"Java", "Go"}, {"C++"}, {"Python", "Go"},
+        {"C++", "Python"}, {"Java", "Python", "Go"}, {"C++", "Java", "Go"}
+    };
+    set<string> known_languages = {"Python", "C++", "Java"};
     
-    cout << "All paths from " << startNode << " to " << endNode << ":" << endl;
-    for (auto path : allPaths) {
-        for (auto node : path) {
-            cout << node << " ";
-        }
-        cout << endl;
-    }
-    
+    int result = maxProjectValue(N, values, required_languages, known_languages);
+    cout << "Maximum Project Value: " << result << endl;
     return 0;
 }
