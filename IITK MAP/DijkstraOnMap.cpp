@@ -126,16 +126,6 @@ int main() {
 
     vector<string> path = dijkstra(graph, start, goal);
 
-    if (path.empty()) {
-        cout << "No path found!" << endl;
-    } else {
-        cout << "Shortest path: ";
-        for (const auto& node : path) {
-            cout << node << " ";
-        }
-        cout << endl;
-
-        // Calculate total distance
         double totalDistance = 0;
         for (int i = 0; i < path.size() - 1; ++i) {
             for (const auto& neighbor : graph[path[i]]) {
@@ -146,7 +136,6 @@ int main() {
             }
         }
         cout << "Total distance: " << totalDistance << endl;
-    }
 
     return 0;
 }
